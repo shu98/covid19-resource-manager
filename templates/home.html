@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Covid-19</title>
+</head>
+
+{% extends "template.html" %} {% set active_page = "home" %} {% block content %}
+
+<body>
+    <div class="container">
+        <br/>
+    </div>
+    <div class="container container-padded">
+        <div class="disclaimer-block">
+            <p style="margin-bottom: 0px;"><b>Notice: As of 04/08/2020, the content for this site is no longer being updated. For the most up-to-date resources, please visit the <a href="https://infectioncontrol.ucsfmedicalcenter.org/covid-kb" target="_blank">UCSF Infection Control Site</a></b></p>
+        </div>
+        <div class="disclaimer-block">
+            <!-- <p style="margin-bottom: 0px;"><span style="font-weight:bold;">Disclaimer: </span>This site exists to serve as a centralized repository for Covid19-related protocols and guideliness for healthcare workers. Submitted resources are reviewed by a team of medical professionals
+                for accuracy and relevance. We do not endorse any resources posted on this site.</p> -->
+            <p style="margin-bottom: 0px;">The goal of this site was to compile a comprehensive but curated directory of publicly-available practice guidelines, clinical protocols, and other resources related to COVID-19. We hoped that this resource would encourage clinicians and medical organizations to share knowledge and ompare practices with peers. UCSF has since offered institutional support for the tool and the official site is now supported by their Web Services team.</p>
+            <br/>
+            <p style="margin-bottom: 0px;">For those who are interested, the source code for our initial verison of the site can be found <a href="https://github.com/shu98/covid19-resource-manager" target="_blank">here<a>.</p>
+        </div>
+    </div>
+    <div class="container">
+        <br/>
+        <br/>
+    </div>
+    <div class="container container-padded">
+
+        <form action="{{ url_for('resources') }}" method="GET" role="form" id="filter-form">
+            <div class="search-info">
+                <div class="col-sm-2 dropdown">
+
+                    <select class="sort-button" name="sortby-input" id="sortby-input" onchange="this.form.submit()">
+                        {% if not sortby %} <option disabled selected value>Sort by</option>
+                        {% else %} <option disabled value>Sort by</option>
+                        {% endif %} 
+
+                        {% if sortby %} <option value="default">Default</option>{% endif %}
+
+                        {% for key, value in {"alpha": "Title (A to Z)", "reverse-alpha": "Title (Z to A)", "most-recently-added": "Most Recently Added"}.items() %}
+                            {% if sortby == key %} <option selected value="{{ key }}">{{ value }}</option>
+                            {% else %} <option value="{{ key }}">{{ value }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <!-- <div class="col-sm-4 searchform">
+                    {% if active_institution|length > 0 %}
+                    <input type="text" class="form-control institution-search" name="institution-search-input" id="institution-search-input" list="inst-options" value="{{ active_institution }}" placeholder="Source/Institution"> {% else %}
+                    <input type="text" class="form-control institution-search" name="institution-search-input" id="institution-search-input" list="inst-options" placeholder="Source/Institution"> {% endif %}
+                    <datalist id="inst-options">
+                        {% for i in all_institutions %}
+                        <option value="{{i}}"></option>
+                        {% endfor %}
+                      </datalist>
+                </div> -->
+                <div class="col-sm-2 dropdown">
+                    <select class="sort-button" name="resource-type-input" id="resource-type-input" onchange="this.form.submit()">
+                        {% if not active_resource_type %} <option disabled selected value>Resource Type</option>
+                        {% else %} <option disabled value>Resource Type</option>
+                        {% endif %} 
+
+                        {% for type in all_resource_types %}
+                            {% if type == active_resource_type %} 
+                            <option selected value="{{ type }}">{{ type }}</option>
+                            {% else %} <option value="{{ type }}">{{ type }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="col-sm-2 dropdown">
+                    <select class="sort-button" name="ia-input" id="ia-input" onchange="this.form.submit()">
+                        {% if not active_ia %} <option disabled selected value>Clinical Location</option>
+                        {% else %} <option disabled value>Clinical Location</option>
+                        {% endif %} 
+
+                        {% for ia in all_ia_labels %}
+                            {% if ia == active_ia %} 
+                            <option selected value="{{ ia }}">{{ ia }}</option>
+                            {% else %} <option value="{{ ia }}">{{ ia }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="col-sm-6 searchform">
+                    {% if search_query|length > 0 %}
+                    <input class="form-control searchbar" name="searchbar-input" id="searchbar-input" type="search" value="{{ search_query }}" placeholder="Search" aria-label="Search"> {% else %}
+                    <input class="form-control searchbar" name="searchbar-input" id="searchbar-input" type="search" placeholder="Search" aria-label="Search"> {% endif %}
+                </div>
+            </div>
+
+            <br/>
+            <br/>
+            <br/>
+
+            <div class="filter-category-block">
+                <p style="font-weight: bold;">Filter by category</p>
+
+                <div class="card-categories-form" action="{{ url_for('resources') }}" method="GET" role="form" id="category-select">
+                    {% for category in all_categories %} {% if show_all and category == 'Show All' %}
+                    <label class="btn tag-in-form tag-in-form-active">
+                            <input type="checkbox" id="{{ category }}" name="{{ category }}" onchange="checkFilters(this)" checked><span>{{category}}</span>
+                            </label> {% elif not show_all and category == 'Show All' %}
+                    <label class="btn tag-in-form">
+                            <input type="checkbox" id="{{ category }}" name="{{ category }}" onchange="checkFilters(this)"><span>{{category}}</span>
+                            </label> {% elif category in category_filters %}
+                    <label class="btn tag-in-form tag-in-form-active">
+                            <input type="checkbox" id="{{ category }}" name="{{ category }}" onchange="checkFilters(this)" checked><span>{{category}}</span>
+                            </label> {% else %}
+                    <label class="btn tag-in-form">
+                            <input type="checkbox" id="{{ category }}" name="{{ category }}" onchange="checkFilters(this)"><span>{{category}}</span>
+                            </label> {% endif %} {% endfor %}
+                </div>
+            </div>
+            <input class="btn" name="searchbar-submit" id="searchbar-submit" type="submit" aria-label="Search" style="display:none;">
+        </form>
+    </div>
+    <!--     <div class="container container-padded" id="advanced-search-container" style="display:none;">
+        <form class="form-inline advanced-search-form">
+            <input type="text" class="form-control advanced-search-form-item" id="advanced-search-institution" placeholder="Source/Institution">
+            <input type="text" class=" form-control advanced-search-form-item" id="advanced-search-category" placeholder="Category">
+            <input type="text" class="form-control advanced-search-form-item" id="advanced-search-tag" placeholder="Tag">
+          <button type="submit" class="btn btn-secondary submit-button">Submit</button>
+        </form>
+    </div> -->
+
+    <div class="container container-padded">
+        {% for card in results %}
+        <p>{{ card }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="container">
+        <br/>
+    </div>
+    <div class="container container-padded">
+        <div class="col article-block">
+            <div class="source">Showing {{total}} Results</div>
+        </div>
+        {% for resource in all_resources %}
+        <a href="{{resource[ 'link']}}" target="_blank">
+            <div class="col article-block">
+                <div class="card-title">{{resource['title']}}</div>
+                <div class="card-description">Resource Type: {{resource['resource_type']}}</div>
+                <div class="card-description">Clinical Location: {{resource['iped_ad']}}</div>
+                <div class="card-source">Source/Institution: {{resource['institution']}}</div> 
+                {% if resource['description'] | length > 0 %} <div class="card-description">Description: {{resource['description']}}</div> {% endif %}
+                <div class="card-categories">
+                    <span>Categories: 
+                        {% for category in resource['categories'] %}
+                        <span class="tag">{{category}}</span> {% endfor %}
+                    </span>
+                    <span class="date">{{resource['date_added']}}</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+
+
+</body>
+
+<script>
+    $('#searchbar-input').keypress(function(e) {
+        if (e.which == 13) {
+            ('form#filter-form').submit();
+            return false;
+        }
+    });
+</script>
+<script>
+    function checkFilters(element) {
+        var all_filters = {{ all_categories | safe}};
+        if (element.id == 'Show All') {
+            all_filters.forEach(function(filter) {
+                if (element.form.elements[filter].checked == true && filter != 'Show All') {
+                    element.form.elements[filter].removeAttribute('checked');
+                }
+            })
+        } else {
+            if (element.form.elements['Show All'].checked == true) {
+                element.form.elements['Show All'].removeAttribute('checked');
+            }
+        }
+        element.form.submit();
+    }
+
+</script>
+{% endblock %}
+
+</html>

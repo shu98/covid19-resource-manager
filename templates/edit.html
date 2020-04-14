@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Covid-19</title>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+    <script src="{{url_for('static', filename='js/main.js')}}"></script> -->
+</head>
+
+{% extends "template.html" %} {% block content %}
+
+<body>
+    <div style="padding-top:16px;">
+        <!-- adding some spacing at the top -->
+    </div>
+    <div>
+    <div class="container container-centered">
+        <div class="u-margin-lg">
+            <div>
+            <p>{{ note }}</p>
+            <p>*Required field</p>
+            </div>
+            <form method="POST">
+                <ul class="form-container">
+                    <li>
+                        <label class="form-label">Title:*</label>
+                        <input class="form-control" type="text" name="title" value="{{ resource['title'] }}" required>
+                    </li>
+                    <br>
+                    <li>
+                        <label class="form-label">Link:*</label>
+                        <input class="form-control" type="text" name="link" value="{{ resource['link'] }}"required>
+                    </li>
+                    <br>
+                    <li>
+                        <label class="form-label" >Source or Institution:*</label>
+                        <p>Choose from the dropdown for an existing institution or type to submit a new entry</p>
+                        <!-- <input class="form-control" type="text" name="institution"> -->
+                        <input type="text" class="form-control institution-search" name="institution" id="institution-search-input" list="inst-options" value="{{ resource['institution'] }}" required>
+                        <datalist id="inst-options">
+                            {% for i in all_institutions %}
+                            <option value="{{i}}"></option>
+                            {% endfor %}
+                          </datalist>
+                    </li>
+                    <br/>
+                    <li>
+                        <label class="form-label">Categories:*</label>
+                        <p>Type and press enter to add a new category or choose from the dropdown menu.</p>
+                        <!-- <input class="form-control" type="text"> -->
+                        <!-- <input type="text" name="categories" class="form-control" placeholder="type a tag and press enter" /> -->
+                        {% set categories_string = ",".join(resource['categories']) %}
+                        <input class="form-control submit-category-input" type="text" name="categories" style="overflow:scroll" value="{{ categories_string }}" required/>
+                        <script type="text/javascript">
+                            var input = document.querySelector('input[name=categories]');
+                            var whitelist = {{ all_categories | safe}}
+                            var tagify = new Tagify(input, {
+                                // after 2 characters typed, all matching values from this list will be suggested in a dropdown
+                                // enforceWhitelist: true,
+                                // whitelist: [].concat(whitelist)
+                                whitelist: whitelist,
+                                maxTags: 10,
+                                dropdown: {
+                                    maxItems: 20, // <- mixumum allowed rendered suggestions
+                                    classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+                                    enabled: 0, // <- show suggestions on focus
+                                    closeOnSelect: false // <- do not hide the suggestions dropdown once an item has been selected
+                                }
+                            });
+                        </script>
+                    </li>
+                    <br>
+                    <li>
+                        <label class="form-label">Description:</label>
+                        <textarea class="form-control" type="text" name="description">{{ resource['description'] }}</textarea>
+                    </li>
+                    <br>
+                    <li>
+                        <label class="form-label">Resource Type:*</label>
+                        <br>
+                        <select class="sort-button" name="resource_type" id="type-options">
+                            {% for i in all_types %}
+                                {% if i == resource['resource_type'] %}<option value="{{i}}" selected>{{i}}</option>
+                                {% else %} <option value="{{i}}">{{i}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <br>
+                    <br>
+                    <li>
+                        <label class="form-label">Clinical Location:*</label>
+                        <!-- <input type="text" class="form-control" name="ia" id="ia-search-input" list="ia-options" required> -->
+                        <br>
+                        <select class="sort-button" name="ia" id="ia-options">
+                            {% for i in ['Ambulatory/Discharge', 'Inpatient/ED', 'Both', 'Neither'] %}
+                                {% if i == resource['iped_ad'] %}<option value="{{i}}" selected>{{i}}</option>
+                                {% else %} <option value="{{i}}">{{i}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <br>
+                    <br>
+                    <li>
+                        <label class="form-label">Submitter Email Address:*</label>
+                        <input class="form-control" type="text" name="submitter" value="{{ resource['submitter'] }}" required>
+                    </li>
+                    <br>
+                    <li class="form-button">
+                        <!-- <button class="btn btn-secondary submit-button">Submit</button> -->
+                        <input class="btn btn-secondary submit-button" id="save" name="save" type="submit" value="Save">
+                        {% if not resource['show'] %}
+                        <input class="btn btn-secondary submit-button" id="save-approve" name="save-approve" type="submit" value="Save & Approve">
+                        {% endif %}
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+    </div>
+</body>
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+{% endblock %}
+
+
+</html>

@@ -1,0 +1,6 @@
+Flask==1.1.1
+flask-bootstrap==3.3.7.1
+flask-sqlalchemy==2.4.1
+flask_migrate==2.5.3
+flask-login=0.5.0
+pandas==1.0.3

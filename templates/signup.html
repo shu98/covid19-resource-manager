@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Covid-19</title>
+</head>
+
+{% extends "template.html" %} {% set active_page = "signup" %} {% block content %}
+
+<body>
+    <div style="padding-top:16px;">
+        <!-- adding some spacing at the top -->
+    </div>
+    <div>
+    <div class="container container-centered">
+        <div class="u-margin-lg">
+        <div><p class="error-message">{{ error }}</p></div>
+        <form method="POST">
+            <ul class="form-container">
+                <li>
+                    <label class="form-label">Email</label>
+                    <input class="form-control" type="text" name="email" required>
+                </li>
+                <br>
+                <li>
+                    <label class="form-label">Password</label>
+                    <input class="form-control" type="password" name="passwd" required>
+                </li>
+                <br>
+                <li class="form-button">
+                    <!-- <button class="btn btn-secondary submit-button">Submit</button> -->
+                    <input class="btn btn-secondary submit-button" type="submit" value="Sign Up">
+                </li>
+            </ul>
+        </form>
+        </div>
+    </div>
+    </div>
+</body>
+
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+
+{% endblock %}
+
+
+</html>

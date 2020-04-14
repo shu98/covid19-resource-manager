@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Covid-19</title>
+</head>
+
+{% extends "template.html" %} {% set active_page = "about" %} {% block content %}
+
+<body>
+    <div class="container">
+        <br/>
+    </div>
+    <div class="container container-padded">
+        <div class="disclaimer-block">
+            <div class="about-title">About the Site</div>
+            <p>The COVID-19 Clinical Resource Repository was created to establish a curated and easily-searchable directory of publicly-available practice guidelines, clinical protocols, and other pertinent resources for clinicians and other healthcare professionals fighting the pandemic caused by the SARS-CoV-2 virus. We hope this will be a accessible, effective, and efficient tool for clinicians treating patients with COVID-19, hospitals/health systems creating COVID-19 response plans, and anyone seeking to stay informed about the response of the healthcare system to the the COVID-19 pandemic. Our site itself does not constitute medical advice, and the opinions and/or recommendations contained within the resources listed on this site belong entirely to the source organization or individual.</p>
+
+            <p>To submit a publicly available resource that will help clinicians screen, diagnose, and treat COVID-19; will provide guidance about use or re-use of personal protective equipment (PPE); relates to system- or government-wide control of SARS-CoV-2  infection or transmission; assists non ICU-trained providers quickly learn about delivering ICU care; or provides other relevant, scientifically rigorous, and evidence-based information regarding COVID-19, please click on the <a href="{{ url_for('contribute') }}">Submit a Resource</a> tab in the header.</p>
+            
+            <p>No submissions of personal observations/ideas, anonymous reports/guidelines/protocols, or non-peer reviewed journal articles will be accepted. Submissions must include a link to a valid URL. All submissions will be reviewed by a team of medical professionals and will be posted strictly at their discretion.</p>
+            
+        </div>
+    </div>
+    <div class="container">
+        <br/>
+    </div>
+    <div class="container container-padded">
+        <div class="disclaimer-block">
+            <div class="about-title">Volunteer Team</div>
+            <p>This site was created by a team of MIT engineering students in collaboration with UCSF Pulmonary/Critical Care Fellows, and supported through <a href="https://hackingmedicine.mit.edu/" target="_blank">MIT Hacking Medicine</a>.</p>
+            <p><span style="font-weight:bold">Developers:</span> Stephanie Hu, Pramoda Karnati, Jing Lin, Charleen Wang, Jordan Wick, Nancy Hung</p>
+            <p><span style="font-weight:bold">Clinicians:</span> William Mckleroy, Aartik Sarma</p>
+        </div>
+    </div>
+
+</body>
+
+{% endblock %}
+
+</html>

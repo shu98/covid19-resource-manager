@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Covid-19</title>
+</head>
+
+{% extends "template.html" %} {% set active_page = "login" %} {% block content %}
+
+<body>
+    <div style="padding-top:16px;">
+        <!-- adding some spacing at the top -->
+    </div>
+    <div>
+        <div class="container container-centered">
+            <div class="u-margin-lg">
+                <div>
+                    <p class="error-message">{{ error }}</p>
+                </div>
+                <form method="POST">
+                    <ul class="form-container">
+                        <li>
+                            <label class="form-label">Email</label>
+                            <input class="form-control" type="text" name="email" required>
+                        </li>
+                        <br>
+                        <li>
+                            <label class="form-label">Password</label>
+                            <input class="form-control" type="password" name="passwd" required>
+                        </li>
+                        <br>
+                        <li class="form-button">
+                            <!-- <button class="btn btn-secondary submit-button">Submit</button> -->
+                            <input class="btn btn-secondary submit-button" type="submit" value="Log In">
+                        </li>
+                    </ul>
+                </form>
+                <!-- <br/>
+                <div>Don't have an account? Sign up <a href="{{ url_for('signup') }}">here</a></div> -->
+                </br>
+                <div>Forgot your password? <a href="{{ url_for('confirm_email') }}">Click here</a> to reset.</div>
+            </div>
+            <br/>
+        </div>
+    </div>
+    </div>
+</body>
+
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+
+{% endblock %}
+
+
+</html>
