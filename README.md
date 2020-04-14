@@ -1,5 +1,5 @@
 # covid-resources
-Website to Aggregate Covid-19 Resources
+Initial version of a website to centralize Covid-19 related clinical resources developed by a team of MIT students. This repository contains code that is available to the public. Excludes pem key and app.db files. 
 
 ## Dependencies
 First install Python dependencies (Flask, etc):
